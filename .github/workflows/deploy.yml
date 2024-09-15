@@ -18,9 +18,16 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+    - name: Add SSH Key for Server
+      run: |
+        mkdir -p ~/.ssh
+        echo "|1|/6JHkAug1h2FwoII5P/XP5poYNg=|a3t/k4YXmWon7R0mtMntxVurhtk= ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC+MlFPMy+/tyRfwiMFuWHlFpLLS9gaeOckaM21FVlMP6be4X/h1y58tR/K3vXY72QZ0jMRPkV8LBYD99Km++F0Cr57i4rcE0c0y+iNgNMqJ6XvTOp2YPclkyG+JiZ5pdb+Qec++o/pskbrVTgj96l/P5oBv+ZG8J1ih8jUdDO//JiPwpe6nllZDsLCWwhsXkPkt+DZbbCMQiUxWJrqBqG8nZeiw/spCVkKlU2T7bdVTz+Yyo/SG8mtGO4onkK/8SxOSCt59GUaww6fFtGTDx4V8VewL+3VTSI0Tl1RWgfWrxaoiYvWdZnImClf4rf6Eb0IL5ZM4ewZacTmPLsiOVSQ28hU/7cznelsk/uPeaHeOVPn8OR1s913QKn+ieU5hGicVI/hMxhhoW51P144qf0DRvCzF7yBZY3LmrIDWvZUUcgmX2Ye0vQkQj4PJzn27Cn19/Zt473OhwIhrjg/jzaNUaFaB3vDCijspfMZqtjeULvPcKBmuQR9XuVVlYw3a+U=" >> ~/.ssh/known_hosts
+        echo "|1|zWwYNE05QEpZfsbqxsP5YHubn/Y=|+myfRhwvO4UPcp2Zuf+5ip5SIgg= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJyejEjkFcUCip04v1F28V7yoIqjr3peBoY5mlPqZ6GH4bQ/v4GGktN7/+xnptQRCX20LnaOKdPdZkELR3MpbW0=" >> ~/.ssh/known_hosts
+        echo "|1|vBPZYbUap7iYXFjwVzi2Al5l5w8=|ApqiT4K3twB7WRavIv5TIVQ3gKU= ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDr9qFBYgpoO2juAvbuZ7mzaCawkhnDzcRz/3JsZa0sE" >> ~/.ssh/known_hosts
+
     - name: Deploy to Server
       run: |
-        ssh ubuntu@152.70.133.123 << 'EOF'
+        ssh -T -o StrictHostKeyChecking=no ubuntu@152.70.133.123 << 'EOF'
           cd ~/my_flask_app
           git pull origin main
           source ~/myenv/bin/activate
